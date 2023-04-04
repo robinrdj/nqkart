@@ -71,6 +71,8 @@ const Register = () => {
   // TODO: CRIO_TASK_MODULE_REGISTER - Implement user input validation logic
  
 
+
+
   /**
    * Validate the input values so that any bad or illegal values are not passed to the backend.
    *
