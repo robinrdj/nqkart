@@ -24,23 +24,17 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
    }
   },[])
 
-
     return (
       <Box className="header">
         <Box className="header-title">
             <img src="logo_light.svg" alt="QKart-icon"></img>
         </Box>
         {children?children:""}
-   
         {hasHiddenAuthButtons?loggedIn?<div style={{display:"flex",alignItems:"center"}} >
           <div style={{display:"flex",alignItems:"center"}}>
           <img src="../../public/avatar.png" alt={userName}/>
           <p style={{marginLeft:"15px"}}>{userName}</p>
-          </div>
-
-    
-
- 
+          </div> 
          <Button onClick={()=>{
           // localStorage.setItem("token",null);
           // localStorage.setItem("username",null);

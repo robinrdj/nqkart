@@ -3,6 +3,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin: 5px;
+    margin-top: 5px;
 }
 
 .card-actions {

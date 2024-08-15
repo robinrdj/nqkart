@@ -51,7 +51,9 @@
 .search-desktop {
   display: none !important;
 }
-
+.searchBar{
+  width: 350px;
+}
 @media screen and (min-width: 768px) {
   .hero {
     justify-content: flex-end;

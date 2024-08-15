@@ -35,10 +35,17 @@ const ProductCard = ({ product, handleAddToCart }) => {
         />
       </CardContent>
       <CardActions disableSpacing>
-       <Button>ADD TO CART</Button>
-      </CardActions>
-    </Card>
-  );
+
+{/* Removed passing unnecessary props */}
+<Button 
+  onClick={() => handleAddToCart(product._id)}  // Only passing productId
+  startIcon={<AddShoppingCartOutlined />}
+>
+  ADD TO CART
+</Button>
+</CardActions>
+</Card>
+);
 };
 
 export default ProductCard;

@@ -18,20 +18,21 @@ function App() {
             <Switch>
               {/* <Redirect strict from="/one/" to="/home" /> */}
               <Route exact path="/">
-              <Products/>
+                hi
+              {/* <Products/> */}
               </Route>
-              <Route path="/register">
+              {/* <Route path="/register">
                 <Register />
               </Route>
               <Route path="/login">
-              <Login />
-              </Route>
+              login
+              </Route> */}
             </Switch>
         
           </div>
           
-      {/* TODO: CRIO_TASK_MODULE_LOGIN - To add configure routes and their mapping */}
-          {/* <Register /> */}
+      TODO: CRIO_TASK_MODULE_LOGIN - To add configure routes and their mapping */
+          <Register />
     </div>
   );
 }
