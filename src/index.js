@@ -21,7 +21,7 @@ ReactDOM.render(
           preventDuplicate
         >
           <BrowserRouter>
-          {/* <App /> */}
+          <App />
           <Footer />
           </BrowserRouter>
           

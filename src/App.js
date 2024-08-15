@@ -3,11 +3,12 @@ import ipConfig from "./ipConfig.json";
 import "./App.css";
 import Login from "./components/Login";
 import Products from "./components/Products";
+import Checkout from "./components/Checkout";
 import theme from "../src/theme";
 import { Route, Switch } from "react-router-dom";
 
 export const config = {
-  // endpoint: `http://${ipConfig.workspaceIp}:8082/api/v1`,
+  endpoint: `http://${ipConfig.workspaceIp}:8082/api/v1`,
 };
 
 function App() {
@@ -18,21 +19,23 @@ function App() {
             <Switch>
               {/* <Redirect strict from="/one/" to="/home" /> */}
               <Route exact path="/">
-                hi
-              {/* <Products/> */}
+              <Products/>
               </Route>
-              {/* <Route path="/register">
+              <Route path="/register">
                 <Register />
               </Route>
               <Route path="/login">
-              login
-              </Route> */}
+              <Login />
+              </Route>
+              <Route path="/checkout">
+              <Checkout />
+              </Route>
             </Switch>
         
           </div>
           
-      TODO: CRIO_TASK_MODULE_LOGIN - To add configure routes and their mapping */
-          <Register />
+      {/* TODO: CRIO_TASK_MODULE_LOGIN - To add configure routes and their mapping */}
+          {/* <Register /> */}
     </div>
   );
 }
