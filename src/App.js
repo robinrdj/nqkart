@@ -8,7 +8,7 @@ import theme from "../src/theme";
 import { Route, Switch } from "react-router-dom";
 
 export const config = {
-  endpoint: `ipConfig.workspaceIp:8082/api/v1`,
+  endpoint: `${ipConfig.workspaceIp}:8082/api/v1`,
 };
 
 
