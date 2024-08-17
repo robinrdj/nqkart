@@ -58,9 +58,8 @@ const ItemQuantity = ({
  * 
  */
 const Cart = ({
-  items = []
+  items = [],handleQuantityChange
 }) => {
-  const history = useHistory();
 
   if (!items.length) {
     return (
@@ -109,10 +108,11 @@ const Cart = ({
                           justifyContent="space-between"
                           alignItems="center"
                       >
-                      <ItemQuantity
-                      value={item.qty}
-                      // Add required props by checking implementation
-                      />
+                    <ItemQuantity
+                    value={item.qty}
+                    handleAdd={() => handleQuantityChange(item._id, item.qty + 1)}
+                    handleDelete={() => handleQuantityChange(item._id, item.qty - 1)}
+                  />
                       <Box padding="0.5rem" fontWeight="700">
                           ${item.cost}
                       </Box>
@@ -141,7 +141,6 @@ const Cart = ({
             variant="contained"
             startIcon={<ShoppingCart />}
             className="checkout-btn"
-            onClick={()=>{history.push("/checkout")}}
           >
             Checkout
           </Button>

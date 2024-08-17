@@ -184,6 +184,17 @@ const addToCart = async (
 
 
 
+const handleQuantityChange = (productId, newQty) => {
+  if (newQty === 0) {
+    // Remove the item from the cart by setting qty to 0
+    addToCart(token, cartData, productId, 0);
+  } else {
+    // Update the quantity if it's greater than 0
+    addToCart(token, cartData, productId, newQty);
+  }
+};
+
+
   return (
     <div>
       <Header hasHiddenAuthButtons={true} children={
@@ -243,7 +254,7 @@ const addToCart = async (
        </Grid>
 
        <Grid item xs={12} md={4}>
-        <Cart items={cartFinalData}/>
+        <Cart items={cartFinalData} handleQuantityChange={handleQuantityChange}/>
        </Grid>
 
       <Footer />
