@@ -8,8 +8,9 @@ import theme from "../src/theme";
 import { Route, Switch } from "react-router-dom";
 
 export const config = {
-  endpoint: `http://${ipConfig.workspaceIp}:8082/api/v1`,
+  endpoint: `http://localhost:8082/api/v1`,
 };
+
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
           {/* <Register /> */}
             <Switch>
               {/* <Redirect strict from="/one/" to="/home" /> */}
-              <Route exact path="/">
+              <Route exact path="/home">
               <Products/>
               </Route>
               <Route path="/register">
@@ -41,3 +42,6 @@ function App() {
 }
 
 export default App;
+
+
+
