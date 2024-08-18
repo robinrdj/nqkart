@@ -15,9 +15,10 @@ import Header from "./Header";
 import "./Products.css";
 import ProductCard from "./ProductCard";
 
+
 // new
 import Cart from "./Cart";
-// import {generateCartItemsFrom} from "./Cart";
+import {generateCartItemsFrom} from "./Cart";
 // import { LocalGasStation } from "@mui/icons-material";
 //new
 
@@ -61,22 +62,7 @@ const Products = () => {
   };
 
 // new
-const generateCartItemsFrom = (cartData, productsData) => {
-  let cartIdList = [];
-  cartData.forEach(cartItem=>{
-    cartIdList.push(cartItem.productId);
-  })
-  let cartProducts=[]
-   productsData.forEach(product=>{
-    if(cartIdList.includes(product._id)){
-      let obj = cartData.find(cartItem=>cartItem.productId===product._id);
-      product["qty"]=obj.qty
-      cartProducts.push(product);
-    }
-  });
-  console.log("c",cartProducts)
-  return cartProducts;
-};
+
 
 // 
   // new
@@ -125,6 +111,7 @@ const generateCartItemsFrom = (cartData, productsData) => {
   };
 
   const fetchCart = async (token) => {
+   if(token){
     try {
       let response = await axios.get(`${config.endpoint}/cart`,{headers:{
         Authorization: `Bearer ${token}`
@@ -133,6 +120,7 @@ const generateCartItemsFrom = (cartData, productsData) => {
     } catch (e) {
       enqueueSnackbar("Failed to fetch cart data", { variant: "error" });
     }
+   }
   };
 
 const isItemInCart = (items, productId) => {

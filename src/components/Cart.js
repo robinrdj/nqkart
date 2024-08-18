@@ -10,7 +10,22 @@ import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import "./Cart.css";
 
-
+export const generateCartItemsFrom = (cartData, productsData) => {
+  let cartIdList = [];
+  cartData.forEach(cartItem=>{
+    cartIdList.push(cartItem.productId);
+  })
+  let cartProducts=[]
+   productsData.forEach(product=>{
+    if(cartIdList.includes(product._id)){
+      let obj = cartData.find(cartItem=>cartItem.productId===product._id);
+      product["qty"]=obj.qty
+      cartProducts.push(product);
+    }
+  });
+  console.log("c",cartProducts)
+  return cartProducts;
+};
 
 
 
