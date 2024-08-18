@@ -22,7 +22,6 @@ ReactDOM.render(
         >
           <BrowserRouter>
           <App />
-          <Footer />
           </BrowserRouter>
           
         </SnackbarProvider>
