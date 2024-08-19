@@ -5,7 +5,7 @@ import {
   ShoppingCartOutlined,
 } from "@mui/icons-material";
 import { Button, IconButton, Stack } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, display } from "@mui/system";
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import "./Cart.css";
@@ -38,6 +38,41 @@ export const getTotalCartValue = (items = []) => {
 };
 
 
+
+
+
+// TODO: CRIO_TASK_MODULE_CHECKOUT - Implement function to return total cart quantity
+/**
+ * Return the sum of quantities of all products added to the cart
+ *
+ * @param { Array.<CartItem> } items
+ *    Array of objects with complete data on products in cart
+ *
+ * @returns { Number }
+ *    Total quantity of products added to the cart
+ *
+ */
+
+export const getTotalItems = (items = []) => {
+  return items.reduce((total, item) => total + item.qty, 0);
+};
+// TODO: CRIO_TASK_MODULE_CHECKOUT - Add static quantity view for Checkout page cart
+/**
+ * Component to display the current quantity for a product and + and - buttons to update product quantity on cart
+ * 
+ * @param {Number} value
+ *    Current quantity of product in cart
+ * 
+ * @param {Function} handleAdd
+ *    Handler function which adds 1 more of a product to cart
+ * 
+ * @param {Function} handleDelete
+ *    Handler function which reduces the quantity of a product in cart by 1
+ * 
+ * @param {Boolean} isReadOnly
+ *    If product quantity on cart is to be displayed as read only without the + - options to change quantity
+ * 
+ */
 const ItemQuantity = ({
   value,
   handleAdd,
@@ -72,10 +107,19 @@ const ItemQuantity = ({
  * 
  * 
  */
+
+//  * @param {Boolean} isReadOnly
+//  *    If product quantity on cart is to be displayed as read only without the + - options to change quantity
+//  * 
+//  */
+
 const Cart = ({
-  items = [],handleQuantityChange
+  products,
+  items = [],handleQuantityChange,isCheckout=false
 }) => {
   const history = useHistory();
+
+
   if (!items.length) {
     return (
       <Box className="cart empty">
@@ -99,7 +143,7 @@ const Cart = ({
         
         {/* //////////// */}
           {items.map((item)=>{  
-       return (<Box display="flex"  padding="1rem" sx={{flexDirection:"column"}}>
+       return (<Box display="flex"  padding="1rem" sx={{flexDirection:"column"}} key={item._id}>
                   <Box className="image-container">
                       <img
                           // Add product image
@@ -123,13 +167,23 @@ const Cart = ({
                           justifyContent="space-between"
                           alignItems="center"
                       >
+                    {!isCheckout &&    
                     <ItemQuantity
                     value={item.qty}
                     handleAdd={() => handleQuantityChange(item._id, item.qty + 1)}
                     handleDelete={() => handleQuantityChange(item._id, item.qty - 1)}
-                  />
+                  />}    
+                 
                       <Box padding="0.5rem" fontWeight="700">
-                          ${item.cost}
+                        <div style={{display:"flex",justifyContent:"space-between"}}>
+                            <div>
+                            Qty:{item.qty}
+                            </div>
+                            <div>
+                            ${item.cost}
+                            </div>
+                        </div>
+                          
                       </Box>
                       </Box>
                   </Box>
@@ -149,8 +203,7 @@ const Cart = ({
             ${getTotalCartValue(items)}
           </Box>
         </Box>
-
-        <Box display="flex" justifyContent="flex-end" className="cart-footer">
+        {!isCheckout && <Box display="flex" justifyContent="flex-end" className="cart-footer">
           <Button
             color="primary"
             variant="contained"
@@ -160,7 +213,35 @@ const Cart = ({
           >
             Checkout
           </Button>
-        </Box>
+        </Box>}
+        <div className="order-details">
+
+          <Box alignSelf="center">
+          <h3>Order Details</h3>
+          <div style={{display:"flex",justifyContent:"space-between"}}>
+          <div>Products</div>
+          <div>{getTotalItems(items)}</div>
+          </div>
+
+          <div style={{display:"flex",justifyContent:"space-between"}}>
+          <div>Subtotal</div>
+          <div> ${getTotalCartValue(items)}</div>
+          </div>
+
+          <div style={{display:"flex",justifyContent:"space-between"}}>
+          <div>Shipping Charges</div>
+          <div>$0</div>
+          </div>
+          
+          <div style={{display:"flex",justifyContent:"space-between"}}>
+          <div>Total</div>
+          <div>${getTotalCartValue(items)}</div>
+          </div>
+        
+          </Box>
+
+        {/* <div>Total Price: ${totalPrice.toFixed(2)}</div> */}
+      </div>
       </Box>
     </>
   );

@@ -4,6 +4,7 @@ import "./App.css";
 import Login from "./components/Login";
 import Products from "./components/Products";
 import Checkout from "./components/Checkout";
+import Thanks from "./components/Thanks";
 import theme from "../src/theme";
 import { Route, Switch } from "react-router-dom";
 
@@ -31,15 +32,13 @@ function App() {
               <Route path="/checkout">
               <Checkout />
               </Route>
+              <Route path="/thanks">
+              <Thanks />
+              </Route>
             </Switch>
-        
           </div>
-          
-      {/* TODO: CRIO_TASK_MODULE_LOGIN - To add configure routes and their mapping */}
-          {/* <Register /> */}
-    </div>
-  );
-}
+      </div>
+)}
 
 export default App;
 
