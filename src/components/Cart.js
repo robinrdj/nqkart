@@ -18,7 +18,7 @@ export const generateCartItemsFrom = (cartData, productsData) => {
     ...item,
     ...productsData.find((product) => item.productId === product._id),
   }));
-  console.log(nextCart);
+  // console.log(nextCart);
   return nextCart;
 };
 
@@ -99,21 +99,32 @@ const Cart = ({ products, items = [], handleQuantity, isReadOnly = false}) => {
               >
                 <ItemQuantity isReadOnly={isReadOnly} value={item.qty}
                 // Add required props by checking implementation
+                // handleAdd = {() => {
+                //   handleQuantity(
+                //     token,
+                //     items,
+                //     item.productId,
+                //     products,
+                //     item.qty + 1
+                //   );
+                // }}
                 handleAdd = {() => {
                   handleQuantity(
-                    token,
-                    items,
                     item.productId,
-                    products,
                     item.qty + 1
                   );
                 }}
+                // handleDelete = {() => {
+                //   handleQuantity(
+                //     token,
+                //     items,
+                //     item.productId,
+                //     products,
+                //     item.qty - 1
+                //   );
                 handleDelete = {() => {
                   handleQuantity(
-                    token,
-                    items,
                     item.productId,
-                    products,
                     item.qty - 1
                   );
                 }}
