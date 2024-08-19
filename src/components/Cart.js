@@ -23,7 +23,6 @@ export const generateCartItemsFrom = (cartData, productsData) => {
       cartProducts.push(product);
     }
   });
-  console.log("c",cartProducts)
   return cartProducts;
 };
 
@@ -173,8 +172,7 @@ const Cart = ({
                     handleAdd={() => handleQuantityChange(item._id, item.qty + 1)}
                     handleDelete={() => handleQuantityChange(item._id, item.qty - 1)}
                   />}    
-                 
-                      <Box padding="0.5rem" fontWeight="700">
+                 {isCheckout &&  <Box padding="0.5rem" fontWeight="700">
                         <div style={{display:"flex",justifyContent:"space-between"}}>
                             <div>
                             Qty:{item.qty}
@@ -184,7 +182,8 @@ const Cart = ({
                             </div>
                         </div>
                           
-                      </Box>
+                      </Box> }
+                     
                       </Box>
                   </Box>
               </Box>)
@@ -214,9 +213,10 @@ const Cart = ({
             Checkout
           </Button>
         </Box>}
-        <div className="order-details">
 
-          <Box alignSelf="center">
+
+        <div className="order-details">
+          {isCheckout &&           <Box alignSelf="center">
           <h3>Order Details</h3>
           <div style={{display:"flex",justifyContent:"space-between"}}>
           <div>Products</div>
@@ -238,7 +238,8 @@ const Cart = ({
           <div>${getTotalCartValue(items)}</div>
           </div>
         
-          </Box>
+          </Box>}
+
 
         {/* <div>Total Price: ${totalPrice.toFixed(2)}</div> */}
       </div>
