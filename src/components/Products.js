@@ -15,7 +15,6 @@ import Header from "./Header";
 import "./Products.css";
 import ProductCard from "./ProductCard";
 
-
 // new
 import Cart from "./Cart";
 import {generateCartItemsFrom} from "./Cart";
@@ -62,7 +61,22 @@ const Products = () => {
   };
 
 // new
-
+// const generateCartItemsFrom = (cartData, productsData) => {
+//   let cartIdList = [];
+//   cartData.forEach(cartItem=>{
+//     cartIdList.push(cartItem.productId);
+//   })
+//   let cartProducts=[]
+//    productsData.forEach(product=>{
+//     if(cartIdList.includes(product._id)){
+//       let obj = cartData.find(cartItem=>cartItem.productId===product._id);
+//       product["qty"]=obj.qty
+//       cartProducts.push(product);
+//     }
+//   });
+//   console.log("c",cartProducts)
+//   return cartProducts;
+// };
 
 // 
   // new
@@ -111,7 +125,6 @@ const Products = () => {
   };
 
   const fetchCart = async (token) => {
-   if(token){
     try {
       let response = await axios.get(`${config.endpoint}/cart`,{headers:{
         Authorization: `Bearer ${token}`
@@ -120,8 +133,8 @@ const Products = () => {
     } catch (e) {
       enqueueSnackbar("Failed to fetch cart data", { variant: "error" });
     }
-   }
   };
+
 
 const isItemInCart = (items, productId) => {
   return items.some((item) => item.productId === productId);
@@ -136,7 +149,6 @@ const addToCart = async (
   options = { preventDuplicate: false }
 ) => {
   const itemExists = isItemInCart(items, productId);
-
   if (itemExists && options.preventDuplicate) {
     enqueueSnackbar(
       "Item already in cart. Use the cart sidebar to update quantity or remove item.",
@@ -144,24 +156,23 @@ const addToCart = async (
     );
     return;
   }
-
   try {
     const response = await axios.post(
       `${config.endpoint}/cart`,
-      { productId, qty },
+      { productId, qty},
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
-
     setCartData(response.data);
 
   } catch (e) {
     if (e.response && e.response.status === 401) {
       enqueueSnackbar("Login to add an item to the Cart", { variant: "error" });
     } else {
+      console.log(e.response);
       enqueueSnackbar(
         "Something went wrong. Check that the backend is running, reachable, and returns valid JSON.",
         { variant: "error" }
@@ -172,13 +183,14 @@ const addToCart = async (
 
 
 
-const handleQuantityChange = (productId, newQty) => {
-  if (newQty === 0) {
+const handleQuantityChange = (token, cartData, productId,products,qty) => {
+  // addToCart(token, cartData, productId,products, qty);
+  if (qty === 0) {
     // Remove the item from the cart by setting qty to 0
     addToCart(token, cartData, productId, 0);
   } else {
     // Update the quantity if it's greater than 0
-    addToCart(token, cartData, productId, newQty);
+    addToCart(token, cartData, productId, qty);
   }
 };
 
@@ -242,7 +254,8 @@ const handleQuantityChange = (productId, newQty) => {
        </Grid>
 
        <Grid item xs={12} md={4}>
-        <Cart items={cartFinalData} handleQuantityChange={handleQuantityChange}/>
+        <Cart items={cartFinalData} handleQuantity={handleQuantityChange}/>
+
        </Grid>
 
       <Footer />
