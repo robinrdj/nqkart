@@ -9,7 +9,9 @@ import theme from "../src/theme";
 import { Route, Switch } from "react-router-dom";
 
 export const config = {
-  endpoint: `http://${ipConfig.workspaceIp}:8082/api/v1`,
+  // endpoint: `http://${ipConfig.workspaceIp}:8082/api/v1`,
+  endpoint: ` https://qkart-backend-9wnz.onrender.com/api/v1`,
+ 
 };
 
 
