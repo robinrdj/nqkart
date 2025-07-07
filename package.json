@@ -62,7 +62,7 @@
     "jest-location-mock": "^1.0.9"
   },
   "engines": {
-  "node": "16.x"
+  "node": "18.x"
 }
 
 }
