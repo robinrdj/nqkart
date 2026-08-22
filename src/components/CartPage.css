@@ -1,0 +1,83 @@
+.cart-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem 3rem;
+    min-height: 60vh;
+}
+
+.cart-page-heading {
+    font-size: 1.6rem !important;
+    font-weight: 700 !important;
+    color: #212121;
+    margin-bottom: 1.25rem !important;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+}
+
+.cart-page-count {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #8a8a8a;
+}
+
+.cart-page-panel {
+    border: 1px solid #e8ecef;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06);
+}
+
+/* The shared Cart component already paints a white background */
+.cart-page-panel .cart {
+    margin: 0;
+}
+
+.cart-page-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 4rem 1rem;
+    border: 1px dashed #dfe5e8;
+    border-radius: 12px;
+    background: #fbfcfc;
+}
+
+.cart-page-state-icon {
+    width: 3.5rem !important;
+    height: 3.5rem !important;
+    color: #c4cdd2;
+}
+
+.cart-page-state-title {
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    color: #212121;
+}
+
+.cart-page-state-text {
+    color: #8a8a8a;
+    font-size: 0.95rem !important;
+}
+
+.cart-page-cta {
+    margin-top: 1rem !important;
+    text-transform: none !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    background: #00a278 !important;
+    padding: 0.5rem 1.5rem !important;
+}
+
+.cart-page-cta:hover {
+    background: #00845c !important;
+}
+
+@media screen and (max-width: 600px) {
+    .cart-page {
+        padding: 1.25rem 0.75rem 2rem;
+    }
+}

@@ -193,9 +193,9 @@ const Login = () => {
 
           <p className="secondary-action">
           Don’t have an account?{" "}
-             <a className="link" href="#">
+             <Link className="link" to="/register">
              Register now
-             </a>
+             </Link>
           </p>
           {/* <p className="secondary-action">
             Already have an account?{" "}

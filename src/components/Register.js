@@ -190,9 +190,9 @@ const Register = () => {
 
           <p className="secondary-action">
             Already have an account?{" "}
-             <a className="link" href="#">
+             <Link className="link" to="/login">
               Login here
-             </a>
+             </Link>
           </p>
           {/* <p className="secondary-action">
             Already have an account?{" "}

@@ -17,7 +17,6 @@ import ProductCard from "./ProductCard";
 
 
 // new
-import Cart from "./Cart";
 import {generateCartItemsFrom} from "./Cart";
 // import { LocalGasStation } from "@mui/icons-material";
 //new
@@ -123,32 +122,21 @@ const Products = () => {
    }
   };
 
-const isItemInCart = (items, productId) => {
-  return items.some((item) => item.productId === productId);
-};
-
-
-const addToCart = async (
-  token,
-  items,
-  productId,
-  qty,
-  options = { preventDuplicate: false }
-) => {
-  const itemExists = isItemInCart(items, productId);
-
-  if (itemExists && options.preventDuplicate) {
-    enqueueSnackbar(
-      "Item already in cart. Use the cart sidebar to update quantity or remove item.",
-      { variant: "warning" }
-    );
+const addToCart = async (token, items, productId, qty) => {
+  if (!token) {
+    enqueueSnackbar("Login to add an item to the Cart", { variant: "warning" });
     return;
   }
+
+  // The backend sets qty absolutely, so send the running total to bump an
+  // item that is already in the cart instead of overwriting it.
+  const existingItem = items.find((item) => item.productId === productId);
+  const nextQty = existingItem ? existingItem.qty + qty : qty;
 
   try {
     const response = await axios.post(
       `${config.endpoint}/cart`,
-      { productId, qty },
+      { productId, qty: nextQty },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -158,6 +146,15 @@ const addToCart = async (
 
     setCartData(response.data);
 
+    const product = productsList.find((item) => item._id === productId);
+    const productName = product ? product.name : "Item";
+
+    enqueueSnackbar(
+      existingItem
+        ? `${productName} — quantity updated to ${nextQty}`
+        : `${productName} added to cart`,
+      { variant: "success" }
+    );
   } catch (e) {
     if (e.response && e.response.status === 401) {
       enqueueSnackbar("Login to add an item to the Cart", { variant: "error" });
@@ -192,9 +189,14 @@ const handleQuantityChange = (productId, newQty) => {
 };
 
 
+  // Total units in the cart, shown as the header badge
+  const cartCount = (cartFinalData || [])
+    .filter((item) => item.qty > 0)
+    .reduce((sum, item) => sum + item.qty, 0);
+
   return (
     <div>
-      <Header hasHiddenAuthButtons={true} children={
+      <Header hasHiddenAuthButtons={true} cartCount={cartCount} children={
       <TextField
         className="search-desktop"
         size="small"
@@ -214,45 +216,52 @@ const handleQuantityChange = (productId, newQty) => {
       </Header>
 
     
-       <Grid container>
-         <Grid item className="product-grid">
-           <Box className="hero">
-             <p className="hero-heading">
-               India’s <span className="hero-highlight">FASTEST DELIVERY</span>{" "}
-               to your door step
-             </p>
-           </Box>
-         </Grid>
-         {noProducts?<Grid>
-          <Box sx={{ display: 'flex', justifyContent:"center" }}>
-          <div>No Products Found..</div>
-          </Box>
-           </Grid>:""}
-         
-         {loading? 
-           <Grid>
-           <Box sx={{ display: 'flex', justifyContent:"center" }}>
-          <CircularProgress />
-          <div>Loading Products..</div>
-          </Box>
-           </Grid>
-          :""}
+      <Box className="hero">
+        <p className="hero-heading">
+          India’s <span className="hero-highlight">FASTEST DELIVERY</span>{" "}
+          to your door step
+        </p>
+      </Box>
 
-         {productsList.map(product=>{
-          return (
-            <Grid item xs={6} md={3} key={product._id}> {/* Added key prop */}
-              <ProductCard 
-                product={product} 
-                handleAddToCart={(productId) => addToCart(token, cartData, productId, 1, { preventDuplicate: true })} // Updated handleAddToCart call
-              />
-            </Grid>)
-         })}
-  
-       </Grid>
+      <Box className="products-section">
+        {!loading && !noProducts && productsList.length > 0 && (
+          <Box className="products-section-head">
+            <h2 className="products-title">Explore products</h2>
+            <span className="products-count">
+              {productsList.length} items
+            </span>
+          </Box>
+        )}
 
-       <Grid item xs={12} md={4}>
-        <Cart products={productsList} items={cartFinalData} handleQuantity={handleQuantityChange}/>
-       </Grid>
+        {loading && (
+          <Box className="products-state">
+            <CircularProgress />
+            <div className="products-state-text">Loading products…</div>
+          </Box>
+        )}
+
+        {noProducts && !loading && (
+          <Box className="products-state">
+            <SentimentDissatisfied className="products-state-icon" />
+            <div className="products-state-text">No products found</div>
+          </Box>
+        )}
+
+        {!loading && productsList.length > 0 && (
+          <Grid container spacing={2}>
+            {productsList.map((product) => (
+              <Grid item xs={6} sm={4} md={3} lg={3} key={product._id}>
+                <ProductCard
+                  product={product}
+                  handleAddToCart={(productId) =>
+                    addToCart(token, cartData, productId, 1)
+                  }
+                />
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </Box>
 
       <Footer />
     </div>

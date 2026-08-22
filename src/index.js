@@ -13,7 +13,8 @@ ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
         <SnackbarProvider
-          maxSnack={1}
+          maxSnack={3}
+          autoHideDuration={2000}
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "center",

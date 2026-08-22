@@ -1,13 +1,12 @@
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Avatar, Button, Stack } from "@mui/material";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import { Avatar, Badge, Button, IconButton, Tooltip } from "@mui/material";
 import Box from "@mui/material/Box";
 import React, { useState, useEffect } from "react";
 import "./Header.css";
-import { useHistory, Link } from "react-router-dom";
-import { Search, SentimentDissatisfied } from "@mui/icons-material";
-import { InputAdornment, TextField } from "@mui/material";
+import { useHistory } from "react-router-dom";
 
-const Header = ({ children, hasHiddenAuthButtons }) => {
+const Header = ({ children, hasHiddenAuthButtons, cartCount = 0 }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const history = useHistory();
   const [userName, setUserName] = useState("");
@@ -22,46 +21,71 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
 
   return (
     <Box className="header">
-      <Box className="header-title">
+      <Box className="header-title" onClick={() => history.push("/")}>
         <img src="logo_light.svg" alt="QKart-icon"></img>
       </Box>
-      {children ? children : ""}
+
+      <Box className="header-search">{children ? children : ""}</Box>
+
       {hasHiddenAuthButtons ? (
         loggedIn ? (
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <img src="../../public/avatar.png" alt={userName} />
-              <p style={{ marginLeft: "15px" }}>{userName}</p>
-            </div>
+          <Box className="header-actions">
+            <Tooltip title="View cart">
+              <IconButton
+                className="cart-icon-button"
+                onClick={() => history.push("/cart")}
+              >
+                <Badge badgeContent={cartCount} color="primary" max={99}>
+                  <ShoppingCartOutlinedIcon />
+                </Badge>
+              </IconButton>
+            </Tooltip>
+
+            <Box className="header-user">
+              <Avatar src="avatar.png" alt={userName} className="header-avatar" />
+              <p className="username-text">{userName}</p>
+            </Box>
+
             <Button
+              className="header-btn header-btn-outline"
+              variant="outlined"
               onClick={() => {
-                // localStorage.setItem("token",null);
-                // localStorage.setItem("username",null);
-                // localStorage.setItem("balance",null);
                 localStorage.clear();
                 history.push("/");
+                window.location.reload();
               }}
             >
-              LOGOUT
+              Logout
             </Button>
-          </div>
+          </Box>
         ) : (
-          <div>
+          <Box className="header-actions">
+            <Tooltip title="View cart">
+              <IconButton
+                className="cart-icon-button"
+                onClick={() => history.push("/cart")}
+              >
+                <Badge badgeContent={cartCount} color="primary" max={99}>
+                  <ShoppingCartOutlinedIcon />
+                </Badge>
+              </IconButton>
+            </Tooltip>
+
             <Button
-              onClick={() => {
-                history.push("/login");
-              }}
+              className="header-btn header-btn-text"
+              onClick={() => history.push("/login")}
             >
-              LOGIN
+              Login
             </Button>
             <Button
-              onClick={() => {
-                history.push("/register");
-              }}
+              className="header-btn header-btn-solid"
+              variant="contained"
+              disableElevation
+              onClick={() => history.push("/register")}
             >
-              REGISTER
+              Register
             </Button>
-          </div>
+          </Box>
         )
       ) : (
         <Button

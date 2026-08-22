@@ -5,45 +5,48 @@ import Login from "./components/Login";
 import Products from "./components/Products";
 import Checkout from "./components/Checkout";
 import Thanks from "./components/Thanks";
+import CartPage from "./components/CartPage";
 import theme from "../src/theme";
 import { Route, Switch } from "react-router-dom";
 
 export const config = {
   // endpoint: `http://${ipConfig.workspaceIp}:8082/api/v1`,
- endpoint: `https://qkartbackendnode.onrender.com/api/v1`,
   // endpoint: ` https://qkart-backend-9wnz.onrender.com/api/v1`,
- 
+  //  endpoint: `https://qkartbackendnode.onrender.com/api/v1`,
+  // endpoint: `https://qbackend-5b0m.onrender.com/api/v1`,
+  // endpoint: `http://localhost:8082/api/v1`,
+  endpoint: `https://nqkartbackend.onrender.com/api/v1`,
 };
-
 
 function App() {
   return (
     <div className="App">
-          <div className="registerContainer">
-          {/* <Register /> */}
-            <Switch>
-              {/* <Redirect strict from="/one/" to="/home" /> */}
-              <Route exact path="/">
-              <Products/>
-              </Route>
-              <Route path="/register">
-                <Register />
-              </Route>
-              <Route path="/login">
-              <Login />
-              </Route>
-              <Route path="/checkout">
-              <Checkout />
-              </Route>
-              <Route path="/thanks">
-              <Thanks />
-              </Route>
-            </Switch>
-          </div>
+      <div className="registerContainer">
+        {/* <Register /> */}
+        <Switch>
+          {/* <Redirect strict from="/one/" to="/home" /> */}
+          <Route exact path="/">
+            <Products />
+          </Route>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/cart">
+            <CartPage />
+          </Route>
+          <Route path="/checkout">
+            <Checkout />
+          </Route>
+          <Route path="/thanks">
+            <Thanks />
+          </Route>
+        </Switch>
       </div>
-)}
+    </div>
+  );
+}
 
 export default App;
-
-
-
