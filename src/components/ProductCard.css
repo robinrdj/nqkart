@@ -98,3 +98,24 @@
 .card-button:hover {
     background: #00845c !important;
 }
+
+/* --- Skeleton placeholders (see ProductCardSkeleton.js) --- */
+.card-media-skeleton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.card-skeleton-content {
+    padding: 0.85rem 0.9rem 0.5rem;
+}
+
+.card-skeleton-actions {
+    padding: 0 0.9rem 0.9rem;
+}
+
+.card-button-skeleton {
+    border-radius: 8px;
+}

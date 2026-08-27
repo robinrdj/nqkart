@@ -1,14 +1,17 @@
 import { ShoppingCartOutlined } from "@mui/icons-material";
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { config } from "../App";
 import Cart, { generateCartItemsFrom } from "./Cart";
+import CartSkeleton from "./CartSkeleton";
 import Footer from "./Footer";
 import Header from "./Header";
 import "./CartPage.css";
+
+const CART_SKELETON_ROWS = 3;
 
 const CartPage = () => {
   const [productsList, setProductsList] = useState([]);
@@ -72,11 +75,8 @@ const CartPage = () => {
   const renderBody = () => {
     if (loading) {
       return (
-        <Box className="cart-page-state">
-          <CircularProgress />
-          <Typography className="cart-page-state-text">
-            Loading your cart…
-          </Typography>
+        <Box className="cart-page-panel">
+          <CartSkeleton rows={CART_SKELETON_ROWS} />
         </Box>
       );
     }

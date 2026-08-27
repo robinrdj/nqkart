@@ -1,0 +1,7 @@
+/* The real cart sizes .image-container from the <img> inside it; the skeleton
+   has no intrinsic content, so give it the same box explicitly. */
+.cart-skeleton-image {
+    width: 8rem;
+    height: 6rem;
+    flex: 0 0 auto;
+}

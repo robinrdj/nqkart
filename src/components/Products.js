@@ -1,6 +1,5 @@
 import { Search, SentimentDissatisfied } from "@mui/icons-material";
 import {
-  CircularProgress,
   Grid,
   InputAdornment,
   TextField,
@@ -14,6 +13,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import "./Products.css";
 import ProductCard from "./ProductCard";
+import ProductCardSkeleton from "./ProductCardSkeleton";
 
 
 // new
@@ -22,9 +22,13 @@ import {generateCartItemsFrom} from "./Cart";
 //new
 
 
+// Roughly one screenful of cards on a desktop grid
+const SKELETON_COUNT = 8;
+
 const Products = () => {
   const [productsList, setProductsList] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // Starts true so the very first paint is skeletons rather than a blank page
+  const [loading, setLoading] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
   const [noProducts, setNoProducts] = useState(false);
 
@@ -234,10 +238,18 @@ const handleQuantityChange = (productId, newQty) => {
         )}
 
         {loading && (
-          <Box className="products-state">
-            <CircularProgress />
-            <div className="products-state-text">Loading products…</div>
-          </Box>
+          <>
+            <Box className="products-section-head">
+              <h2 className="products-title">Explore products</h2>
+            </Box>
+            <Grid container spacing={2}>
+              {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+                <Grid item xs={6} sm={4} md={3} lg={3} key={`skeleton-${index}`}>
+                  <ProductCardSkeleton />
+                </Grid>
+              ))}
+            </Grid>
+          </>
         )}
 
         {noProducts && !loading && (

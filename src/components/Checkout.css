@@ -36,3 +36,147 @@ p {
         padding: 2rem 4rem;
     }
 }
+/* ---- Delivery address selection ---- */
+.address-section {
+    margin: 1.25rem 0;
+}
+
+.address-section-head {
+    margin-bottom: 0.75rem;
+}
+
+.address-section-title {
+    font-weight: 700 !important;
+    color: #212121 !important;
+    font-size: 1rem !important;
+}
+
+.address-section-hint,
+.checkout-blocker {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.35rem !important;
+    font-size: 0.85rem !important;
+    color: #8a6d00 !important;
+}
+
+.checkout-blocker {
+    margin: 0.5rem 0 0.75rem !important;
+}
+
+.address-hint-icon {
+    width: 1.05rem !important;
+    height: 1.05rem !important;
+}
+
+.address-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.85rem 1rem 0.85rem 0.5rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid #dde3e6;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 0.16s ease, background-color 0.16s ease,
+        box-shadow 0.16s ease;
+}
+
+.address-card:hover {
+    border-color: #00a278;
+    background: #f6fbf8;
+}
+
+.address-card:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 162, 120, 0.25);
+}
+
+.address-card-selected,
+.address-card-selected:hover {
+    border-color: #00a278;
+    border-width: 2px;
+    /* Keep the row height identical to the unselected state */
+    padding: calc(0.85rem - 1px) calc(1rem - 1px) calc(0.85rem - 1px)
+        calc(0.5rem - 1px);
+    background: #ebf5e3;
+    box-shadow: 0 1px 6px rgba(0, 162, 120, 0.15);
+}
+
+.address-radio {
+    color: #b0bec5 !important;
+    padding: 0.25rem !important;
+    margin-top: 0.1rem !important;
+}
+
+.address-card-selected .address-radio {
+    color: #00a278 !important;
+}
+
+.address-card-body {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.address-text {
+    color: #3c3c3c !important;
+    white-space: pre-line;
+    word-break: break-word;
+}
+
+.address-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.4rem !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    color: #00845c !important;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.address-badge-icon {
+    width: 0.95rem !important;
+    height: 0.95rem !important;
+}
+
+.address-delete {
+    flex: 0 0 auto;
+    text-transform: none !important;
+    align-self: center;
+}
+
+.address-skeleton {
+    border-radius: 10px;
+    margin-bottom: 0.75rem;
+}
+
+.address-empty {
+    padding: 1.25rem;
+    border: 1px dashed #c4cdd2;
+    border-radius: 10px;
+    background: #fafbfc;
+}
+
+.address-empty-title {
+    font-weight: 700 !important;
+    color: #3c3c3c !important;
+}
+
+.address-empty-text {
+    font-size: 0.9rem !important;
+    color: #8a8a8a !important;
+    margin-top: 0.25rem !important;
+}
+
+@media screen and (max-width: 600px) {
+    .address-card {
+        flex-wrap: wrap;
+    }
+    .address-delete {
+        margin-left: auto;
+    }
+}

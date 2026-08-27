@@ -1,12 +1,19 @@
-import { CreditCard, Delete } from "@mui/icons-material";
+import {
+  CheckCircle,
+  CreditCard,
+  InfoOutlined,
+  RadioButtonUnchecked,
+} from "@mui/icons-material";
 import {
   Button,
   Divider,
   Grid,
+  Radio,
+  RadioGroup,
+  Skeleton,
   Stack,
   TextField,
   Typography,
-  OutlinedInput
 } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
@@ -15,6 +22,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { config } from "../App";
 import Cart, { getTotalCartValue, generateCartItemsFrom } from "./Cart";
+import CartSkeleton from "./CartSkeleton";
 import "./Checkout.css";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -97,6 +105,8 @@ const Checkout = () => {
     value: "",
   });
   const [loading, setLoading] = useState(false);
+  // Tracked separately from the address fetch above; the two resolve independently
+  const [cartLoading, setCartLoading] = useState(true);
 
   useEffect(() => {
     if (!token) {
@@ -457,13 +467,20 @@ const Checkout = () => {
   // Fetch products and cart data on page load
   useEffect(() => {
     const onLoadHandler = async () => {
-      const productsData = await getProducts();
+      try {
+        const productsData = await getProducts();
 
-      const cartData = await fetchCart(token);
+        const cartData = await fetchCart(token);
 
-      if (productsData && cartData) {
-        const cartDetails = await generateCartItemsFrom(cartData, productsData);
-        setItems(cartDetails);
+        if (productsData && cartData) {
+          const cartDetails = await generateCartItemsFrom(
+            cartData,
+            productsData
+          );
+          setItems(cartDetails);
+        }
+      } finally {
+        setCartLoading(false);
       }
     };
     onLoadHandler();
@@ -485,34 +502,99 @@ const Checkout = () => {
               Select the address you want to get your order delivered.
             </Typography>
             <Divider />
-            <Box>
-              {/* TODO: CRIO_TASK_MODULE_CHECKOUT - Display list of addresses and corresponding "Delete" buttons, if present, of which 1 can be selected */}
-              {
-  addresses.all.length > 0 ? (
-    addresses.all.map((item, index) => (
-      <Box key = {item._id} onClick={()=>{ handleSelectAddress(item._id)}} 
-      sx={{
-        backgroundColor: item._id === addresses.selected? '#EBF5E3' : 'transparent',
-        cursor: 'pointer',
-      }}
-     
-      border={1} borderRadius={1} padding="0.5rem" margin="0.5rem" borderColor="gray"  display="flex" justifyContent="space-between" alignItems="center">
-  <Typography key={index} my="1rem" >
-        {item.address}
-      </Typography>
-      <Button onClick={(e) => { e.stopPropagation(); deleteAddress(token,item._id); }}><DeleteIcon />Delete</Button>
-   
-</Box>
-    
-    ))
-  ) : (
-    <Typography my="1rem">
-      No addresses found for this account. Please add one to proceed
-    </Typography>
-  )
-}
 
-              
+            <Box className="address-section">
+              <Box className="address-section-head">
+                <Typography className="address-section-title">
+                  {addresses.selected
+                    ? "Delivering to the address below"
+                    : "Step 1 — Select a delivery address"}
+                </Typography>
+                {!addresses.selected && addresses.all.length > 0 && (
+                  <Typography className="address-section-hint">
+                    <InfoOutlined className="address-hint-icon" />
+                    Tap an address to choose where this order should be
+                    delivered.
+                  </Typography>
+                )}
+              </Box>
+
+              {loading ? (
+                <Box>
+                  {[0, 1].map((key) => (
+                    <Skeleton
+                      key={key}
+                      variant="rectangular"
+                      animation="wave"
+                      height={76}
+                      className="address-skeleton"
+                    />
+                  ))}
+                </Box>
+              ) : addresses.all.length > 0 ? (
+                <RadioGroup
+                  value={addresses.selected}
+                  onChange={(e) => handleSelectAddress(e.target.value)}
+                >
+                  {addresses.all.map((item) => {
+                    const isSelected = item._id === addresses.selected;
+                    return (
+                      <Box
+                        key={item._id}
+                        className={`address-card ${
+                          isSelected ? "address-card-selected" : ""
+                        }`}
+                        onClick={() => handleSelectAddress(item._id)}
+                      >
+                        <Radio
+                          checked={isSelected}
+                          value={item._id}
+                          size="small"
+                          className="address-radio"
+                          icon={<RadioButtonUnchecked />}
+                          checkedIcon={<CheckCircle />}
+                          inputProps={{ "aria-label": item.address }}
+                        />
+
+                        <Box className="address-card-body">
+                          <Typography className="address-text">
+                            {item.address}
+                          </Typography>
+                          {isSelected && (
+                            <Typography className="address-badge">
+                              <CheckCircle className="address-badge-icon" />
+                              Delivering here
+                            </Typography>
+                          )}
+                        </Box>
+
+                        <Button
+                          className="address-delete"
+                          color="error"
+                          size="small"
+                          startIcon={<DeleteIcon />}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteAddress(token, item._id);
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </Box>
+                    );
+                  })}
+                </RadioGroup>
+              ) : (
+                <Box className="address-empty">
+                  <Typography className="address-empty-title">
+                    No addresses saved yet
+                  </Typography>
+                  <Typography className="address-empty-text">
+                    Add an address below to choose where your order should be
+                    delivered.
+                  </Typography>
+                </Box>
+              )}
             </Box>
 
             {/* TODO: CRIO_TASK_MODULE_CHECKOUT - Dislay either "Add new address" button or the <AddNewAddressView> component to edit the currently selected address */}
@@ -557,22 +639,33 @@ const Checkout = () => {
               </Typography>
             </Box>
 
+            {!addresses.selected && (
+              <Typography className="checkout-blocker">
+                <InfoOutlined className="address-hint-icon" />
+                Select a delivery address above to place your order.
+              </Typography>
+            )}
+
             <Button
-  startIcon={<CreditCard />}
-  variant="contained"
-  onClick={async () => {
-    if (validateRequest(items, addresses)) {
-      await performCheckout(token, items, addresses);
-    }
-  }}
->
-  PLACE ORDER
-</Button>
+              startIcon={<CreditCard />}
+              variant="contained"
+              onClick={async () => {
+                if (validateRequest(items, addresses)) {
+                  await performCheckout(token, items, addresses);
+                }
+              }}
+            >
+              PLACE ORDER
+            </Button>
 
           </Box>
         </Grid>
         <Grid item xs={12} md={3} bgcolor="#E9F5E1">
-          <Cart isReadOnly products={products} items={items}/>
+          {cartLoading ? (
+            <CartSkeleton isReadOnly rows={2} />
+          ) : (
+            <Cart isReadOnly products={products} items={items} />
+          )}
         </Grid>
       </Grid>
       <Footer />
